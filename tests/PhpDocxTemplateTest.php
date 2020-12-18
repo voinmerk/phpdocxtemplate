@@ -15,6 +15,7 @@ class PhpDocxTemplateTest extends TestCase
     private const TEMPLATE2 = __DIR__ . "/templates/template2.docx";
     private const TEMPLATE3 = __DIR__ . "/templates/template3.docx";
     private const TEMPLATE4 = __DIR__ . "/templates/template4.docx";
+    private const TEMPLATE5 = __DIR__ . "/templates/template5.docx";
 
     public function testXmlToString(): void
     {
@@ -466,6 +467,16 @@ class PhpDocxTemplateTest extends TestCase
             "6E\" w:rsidRPr=\"008D21C0\"><w:pgSz w:w=\"11906\" w:h=\"16838\"/><w:pgMar w:top=\"1134\" w:right=\"8" .
             "50\" w:bottom=\"1134\" w:left=\"1701\" w:header=\"708\" w:footer=\"708\" w:gutter=\"0\"/><w:cols w:s" .
             "pace=\"708\"/><w:docGrid w:linePitch=\"360\"/></w:sectPr></w:body></w:document>\n"
+        );
+    }
+
+    public function testLambda(): void
+    {
+        $reporter = new PhpDocxTemplate(self::TEMPLATE5);
+        $reporter->render(['asd' => 123]);
+        $this->assertEquals(
+            $reporter->getXml(),
+            ''
         );
     }
 }

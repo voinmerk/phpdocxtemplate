@@ -4,6 +4,7 @@ namespace PhpDocxTemplate;
 
 use DOMDocument;
 use DOMElement;
+use PhpDocxTemplate\Twig\Lambda\LambdaExtension;
 use Twig\Loader\ArrayLoader;
 use Twig\Environment;
 
@@ -400,20 +401,23 @@ class PhpDocxTemplate
     }
 
     /**
-     * Render xml
-     *
-     * @param string $srcXml - source xml
-     * @param array $context - data to be rendered
+     * @param string $srcXml
+     * @param array $context
      *
      * @return string
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     private function renderXml(string $srcXml, array $context): string
     {
         $srcXml = str_replace('<w:p>', "\n<w:p>", $srcXml);
 
-        $template = new Environment(new ArrayLoader([
-            'index' => $srcXml,
-        ]));
+        $template = new Environment(
+            new ArrayLoader(['index' => $srcXml])
+        );
+        $template->addExtension(new LambdaExtension());
         $dstXml = $template->render('index', $context);
 
         $dstXml = str_replace(
